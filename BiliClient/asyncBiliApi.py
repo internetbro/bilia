@@ -669,8 +669,27 @@ class asyncBiliApi(object):
                      cid: int, 
                      progres: int
                      ) -> dict:
+       '''
+        B站上报视频观看进度
+        aid int 视频av号
+        cid int 视频cid号
+        progres int 观看秒数
         '''
-  
+        url = "http://api.bilibili.com/x/v2/history/report"
+        post_data = {
+            "aid": aid,
+            "cid": cid,
+            "progres": progres,
+            "csrf": self._bili_jct
+            }
+        async with self._session.post(url, data=post_data, verify_ssl=False) as r:
+            ret = await r.json()
+        return ret
+
+    async def share(self, 
+                    aid
+                    ) -> dict:
+        '''
         分享指定av号视频
         aid int 视频av号
         '''
