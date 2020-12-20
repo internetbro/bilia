@@ -355,7 +355,7 @@ class asyncBiliApi(object):
 
     async def elecPay(self, 
                       uid: int, 
-                      num: int = 50
+                      num: int = 0
                       ) -> dict:
         '''
         用B币给up主充电
