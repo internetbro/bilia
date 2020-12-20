@@ -569,74 +569,7 @@ class asyncBiliApi(object):
             ret = await r.json()
         return ret
 
-    async def coin(self, 
-                   aid: int, 
-                   num: int = 1, 
-                   select_like: int = 1
-                   ) -> dict:
-        '''
-        给指定av号视频投币
-        aid int 视频av号
-        num int 投币数量
-        select_like int 是否点赞
-        '''
-        url = "https://api.bilibili.com/x/web-interface/coin/add"
-        post_data = {
-            "aid": aid,
-            "multiply": num,
-            "select_like": select_like,
-            "cross_domain": "true",
-            "csrf": self._bili_jct
-            }
-        async with self._session.post(url, data=post_data, verify_ssl=False) as r:
-            ret = await r.json()
-        return ret
-
-    async def coinCv(self,
-                    cvid: int, 
-                    num: int = 1, 
-                    upid: int = 0, 
-                    select_like: int = 1
-                    ) -> dict:
-        '''
-        给指定cv号专栏投币
-        cvid int 专栏id
-        num int 投币数量
-        upid int 专栏up主uid
-        select_like int 是否点赞
-        '''
-        url = "https://api.bilibili.com/x/web-interface/coin/add"
-        if upid == 0: #up主id不能为空，需要先请求一下专栏的up主
-            info = await self.articleViewInfo(cvid)
-            upid = info["data"]["mid"]
-        post_data = {
-            "aid": cvid,
-            "multiply": num,
-            "select_like": select_like,
-            "upid": upid,
-            "avtype": 2,#专栏必为2，否则投到视频上面去了
-            "csrf": self._bili_jct
-            }
-        async with self._session.post(url, data=post_data, verify_ssl=False) as r:
-            ret = await r.json()
-        return ret
-
-    async def articleViewInfo(self, 
-                              cvid: int
-                              ) -> dict:
-        '''
-        获取专栏信息
-        cvid int 专栏id
-        '''
-        url = f'https://api.bilibili.com/x/article/viewinfo?id={cvid}'
-        async with self._session.get(url, verify_ssl=False) as r:
-            ret = await r.json()
-        return ret
-
-    async def xliveWebHeartBeat(self, 
-                     hb: str = None, 
-                     pf: str = None
-                     ) -> dict:
+    
         '''
         B站直播间心跳
         hb str 请求信息(base64编码) "{周期}|{uid}|1|0"
@@ -737,26 +670,7 @@ class asyncBiliApi(object):
                      progres: int
                      ) -> dict:
         '''
-        B站上报视频观看进度
-        aid int 视频av号
-        cid int 视频cid号
-        progres int 观看秒数
-        '''
-        url = "http://api.bilibili.com/x/v2/history/report"
-        post_data = {
-            "aid": aid,
-            "cid": cid,
-            "progres": progres,
-            "csrf": self._bili_jct
-            }
-        async with self._session.post(url, data=post_data, verify_ssl=False) as r:
-            ret = await r.json()
-        return ret
-
-    async def share(self, 
-                    aid
-                    ) -> dict:
-        '''
+  
         分享指定av号视频
         aid int 视频av号
         '''
